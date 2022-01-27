@@ -1,0 +1,111 @@
+﻿<Window x:Class="Notepad.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Height="700" Width="1050"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Background="Transparent" 
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        >
+
+    <Border CornerRadius="20" Background="#272537">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="272" />
+                <ColumnDefinition Width="770"/>
+            </Grid.ColumnDefinitions>
+
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="594"/>
+            </Grid.RowDefinitions>
+            
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Left" Margin="0,20,0,0" >
+                <StackPanel Grid.Row="1" x:Name="scenarioName">
+                </StackPanel>
+            </ScrollViewer>
+            
+            <Button    Background="#272537"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       BorderBrush="#272537"
+                       Foreground="White" 
+                       FontSize="22" 
+                       Margin="31,36,60,0" Height="40" Width="182"
+                       Name="ButtonAddScenario"
+                       Click="ButtonAddScenario_Click" 
+                       RenderTransformOrigin="0.497,1.225">Add new note</Button>
+
+            <Button Grid.Column="1"
+                       Background="#272537"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center" 
+                       BorderBrush="#272537"
+                       Foreground="White" 
+                       FontSize="22" 
+                       Margin="559,36,30,0" Height="40" Width="182"
+                        Name="ButtonAddTab"
+                       Click="TextBlock_Click">
+                        Add new tab</Button>
+            
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,0,0" >
+                <StackPanel  Grid.Row="1" Grid.Column="1" Margin="0,0,10,10" x:Name="notes" >
+                </StackPanel>
+            </ScrollViewer>
+            
+            <Button Name ="ButtonExit" 
+                    Content="X" Click="ButtonExit_Click" 
+                    BorderBrush="Gray" Background="#272537" 
+                    FontSize="17"
+                    Foreground="WhiteSmoke"
+                    Grid.Column="1" 
+                    HorizontalAlignment="Left" 
+                    Margin="731,5,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="36" Height="26" 
+                    RenderTransformOrigin="0.528,-0.038"/>
+           
+            <Button Name="ButtonMinimize" 
+                    Content="__________" 
+                    Click="ButtonMinimize_Click" 
+                    BorderBrush="Gray" 
+                    Background="#272537" 
+                    FontSize="5" 
+                    FontFamily="Bold"
+                    Foreground="WhiteSmoke" 
+                    Grid.Column="1" 
+                    HorizontalAlignment="Left" 
+                    Margin="690,5,0,0" 
+                    VerticalAlignment="Top" 
+                    Width="36" Height="26" 
+                    RenderTransformOrigin="0.194,-0.346" />
+            
+            <Canvas HorizontalAlignment="Left" Height="624" Grid.Row="1" VerticalAlignment="Top" Width="13" Margin="260,0,0,-29">
+                <Canvas Height="300" Width="300">
+                    <Line
+                         X1="0" Y1="0"
+                         X2="0" Y2="610"
+                         Stroke="DimGray"
+                         StrokeThickness="0.3"/>
+                </Canvas>
+            </Canvas>
+            
+            <Canvas HorizontalAlignment="Left" Height="14" Margin="5,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="1039" Grid.ColumnSpan="2">
+                <Line
+                      X1="0" Y1="0"
+                      X2="1029" Y2="0"
+                      Stroke="DimGray"
+                     StrokeThickness="0.3"/>
+            </Canvas>
+
+
+        </Grid>
+
+    </Border>
+
+</Window>
