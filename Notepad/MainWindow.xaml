@@ -26,10 +26,10 @@
             </Grid.RowDefinitions>
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Left" Margin="0,20,0,0" >
-                <StackPanel Grid.Row="1" x:Name="scenarioName">
+                <StackPanel Grid.Row="1" x:Name="noteName">
                 </StackPanel>
             </ScrollViewer>
-
+           
             <Button    Background="#272537"
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center" 
@@ -38,7 +38,7 @@
                        FontSize="22" 
                        Margin="31,36,60,0" Height="40" Width="182"
                        Name="ButtonAddScenario"
-                       Click="ButtonAddScenario_Click" 
+                       Click="ButtonAddNote_Click" 
                        RenderTransformOrigin="0.497,1.225">Add new note</Button>
 
             <Button Grid.Column="1"
@@ -51,7 +51,8 @@
                        Margin="559,36,30,0" Height="40" Width="182"
                         Name="ButtonAddTab"
                        Click="TextBlock_Click">
-                Add new tab</Button>
+                        Add new tab
+            </Button>
 
             <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,0,0" >
                 <StackPanel  Grid.Row="1" Grid.Column="1" Margin="0,0,10,10" x:Name="notes" >
@@ -105,6 +106,7 @@
             <Button x:Name="ButtonSaveAll" 
                 Content="💾" 
                 Click="ButtonSaveAll_Click" 
+                
                 BorderBrush="Gray" 
                 Background="#272537" 
                 FontSize="15" 
@@ -114,7 +116,12 @@
                 Margin="10,5,0,0" 
                 VerticalAlignment="Top" 
                 Width="36" Height="26" 
-                RenderTransformOrigin="0.194,-0.346" />
+                RenderTransformOrigin="0.194,-0.346" 
+                    />
+            <Popup Name="myPopup" PlacementTarget="{Binding ElementName=ButtonSaveAll}" Placement="Right"  >
+                
+
+            </Popup>
 
 
         </Grid>

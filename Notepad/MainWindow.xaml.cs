@@ -1,19 +1,19 @@
-﻿using Microsoft.Win32;
+﻿
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Notepad
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+
         public struct Tab
         {
             public TextBox TextBox;
@@ -33,24 +33,39 @@ namespace Notepad
         public MainWindow()
         {
             InitializeComponent();
+            Setup();
 
+        }
+   
+        /// <summary>
+        /// Function that checks if there is a saved note button in the file, sends a button as a parameter to the Function "CreateNoteButton()".
+        /// Also disables the "Add Tab" button because there is no selected Note Button when you run app for the first time.
+        ///  Disables TextBox of Note Button when you are finish with renaming by click wherever on the app.
+        /// </summary>
+        private void Setup()
+        {
             KeyDown += PressEnter;
             MouseLeftButtonDown += OnMouseLeftClick;
 
-            _savingSystem = new SavingSystem();
+            SetAddTabButtonVisibility(false);
 
+            _savingSystem = new SavingSystem();
             ListOfNotes notes = _savingSystem.LoadNoteData();
 
-            if(notes != null)
+            if (notes != null)
             {
-                for(int i = 0; i < notes.Notes.Count; i++)
+                for (int i = 0; i < notes.Notes.Count; i++)
                 {
                     CreateNoteButton(notes.Notes[i]);
                 }
             }
-
-            SetAddTabButtonVisibility(false);
+            
         }
+
+        /// <summary>
+        /// Button "Add Tab" is desabled on begining. When you click Button "Add Note" then appears(enabled) button "Add Tab".
+        /// </summary>
+        /// <param name="isVisible"></param>
         private void SetAddTabButtonVisibility(bool isVisible)
         {
             ButtonAddTab.IsEnabled = isVisible;
@@ -64,17 +79,19 @@ namespace Notepad
             }
         }
 
-       
-
-        private void ButtonAddScenario_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddNote_Click(object sender, RoutedEventArgs e)
         {
             CreateNoteButton();
         }
-
+        /// <summary>
+        /// Its using for loading saved button notes from Function "Setup()", and for creating new one.
+        /// Apperance of the whole Note Button.
+        /// </summary>
+        /// <param name="noteContent"></param>
         private void CreateNoteButton(NoteContent noteContent = null)
         {
             TextBox textBoxForNoteName = new TextBox();
-            Button buttonForNotepad = new Button();
+            Button buttonForNoteName = new Button();
 
             textBoxForNoteName.IsEnabled = false;
             textBoxForNoteName.TextWrapping = TextWrapping.Wrap;
@@ -86,15 +103,16 @@ namespace Notepad
             textBoxForNoteName.Foreground = Brushes.White;
             textBoxForNoteName.ContextMenu = new ContextMenu();
 
-            buttonForNotepad.Width = 200;
-            buttonForNotepad.MinHeight = 50;
-            buttonForNotepad.Foreground = Brushes.White;
-            buttonForNotepad.Height = textBoxForNoteName.Height;
-            buttonForNotepad.Background = new SolidColorBrush(Color.FromArgb(27, 25, 37, 100));
-            buttonForNotepad.Margin = new Thickness(30, 5, 10, 10);
+            buttonForNoteName.Width = 200;
+            buttonForNoteName.MinHeight = 50;
+            buttonForNoteName.Foreground = Brushes.White;
+            buttonForNoteName.Height = textBoxForNoteName.Height;
+            buttonForNoteName.Background = new SolidColorBrush(Color.FromArgb(27, 25, 37, 100));
+            buttonForNoteName.Margin = new Thickness(30, 5, 10, 10);
 
             string ScenarioNameDisplay = string.Format("Note{0}", _listOfNotes.Count);
-            if (noteContent != null)
+
+            if (noteContent != null) // saved name of Button Note
             {
                 if (noteContent.Name != String.Empty)
                 {
@@ -103,24 +121,28 @@ namespace Notepad
             }
             textBoxForNoteName.Text = ScenarioNameDisplay;
 
-            buttonForNotepad.Content = textBoxForNoteName;
-            scenarioName.Children.Add(buttonForNotepad);
-
+            buttonForNoteName.Content = textBoxForNoteName;
+            noteName.Children.Add(buttonForNoteName);
 
             Note note = new Note();
             note.NoteReferences.NameTextBox = textBoxForNoteName;
-            note.NoteReferences.Button = buttonForNotepad;
-            if(noteContent != null)
+            note.NoteReferences.Button = buttonForNoteName;
+            if (noteContent != null) //assing tabs
             {
                 note.NoteContent = noteContent;
             }
             _listOfNotes.Add(note);
 
-            buttonForNotepad.Click += ButtonAddTab_Click;
-            buttonForNotepad.Click += OnClickNameOfNoteButton;
-            buttonForNotepad.MouseRightButtonDown += OnRightClickNameOfNote;
+            buttonForNoteName.Click += EnableAddTabButton;
+            buttonForNoteName.Click += OnClickNameOfNoteButton;
+            buttonForNoteName.MouseRightButtonDown += OnRightClickNameOfNote;
         }
 
+        /// <summary>
+        /// Creating menu for rename and delete Note Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnRightClickNameOfNote(object sender, MouseEventArgs e)
         {
             Button clickedButton = sender as Button;
@@ -130,7 +152,7 @@ namespace Notepad
             _rightClickedNote = FindNoteFromButton(clickedButton);
 
             ContextMenu contextMenu = new ContextMenu();
-            MenuItem menuItemRename= new MenuItem();
+            MenuItem menuItemRename = new MenuItem();
             MenuItem menuItemDelete = new MenuItem();
 
             menuItemRename.Header = "Rename";
@@ -143,21 +165,27 @@ namespace Notepad
             contextMenu.Items.Add(menuItemDelete);
 
             clickedButton.ContextMenu = contextMenu;
-          
         }
 
         private void OnDeleteNoteClicked(object sender, RoutedEventArgs e)
         {
             DeleteNote(_rightClickedNote);
+
         }
 
+        /// <summary>
+        /// Function that deletes specified note by removing its button reference from windows childrens.
+        /// It will also remove it from the listOfNotes, clear all tabs and disable "Add Tab" button.
+        /// </summary>
+        /// <param name="note">Note that will get deleted.</param>
         private void DeleteNote(Note note)
         {
-            scenarioName.Children.Remove(note.NoteReferences.Button);
+            noteName.Children.Remove(note.NoteReferences.Button);
             _listOfNotes.Remove(note);
             SetAddTabButtonVisibility(false);
             CleanTabs();
         }
+
         private void OnRenameClicked(object sender, EventArgs eventArgs)
         {
             _rightClickedNote.NoteReferences.NameTextBox.IsEnabled = true;
@@ -179,18 +207,22 @@ namespace Notepad
 
         private void ButtonSaveAll_Click(object sender, RoutedEventArgs e)
         {
+            PopUpWindowForSave();
             SaveNote();
             _savingSystem.SaveNotes(_listOfNotes);
+            
         }
-
+        /// <summary>
+        /// Function that caches values of Tabs and value of CheckBox for exact Note Button in the ListOfNoteTabs.
+        /// </summary>
         private void SaveNote()
         {
             if (_selectedNote == null)
                 return;
 
-            _selectedNote.NoteContent.ListOfNoteTabs.Clear();
+            _selectedNote.NoteContent.ListOfNoteTabs.Clear(); //when you click on another Note Button, Tabs from previous Note are removed.
 
-            for(int i = 0; i < _listOfTabs.Count; i++)
+            for (int i = 0; i < _listOfTabs.Count; i++)
             {
                 NoteTab noteContent = new NoteTab();
                 noteContent.Note = _listOfTabs[i].TextBox.Text;
@@ -207,14 +239,14 @@ namespace Notepad
             note.NoteContent.Name = note.NoteReferences.NameTextBox.Text;
             note.NoteReferences.NameTextBox.IsEnabled = false;
         }
-       
+
         private void CleanTabs()
         {
-           for(int i = 0;i < _listOfTabs.Count; i++)
+            for (int i = 0; i < _listOfTabs.Count; i++)
             {
                 _listOfTabs[i].Grid.Children.Clear();
                 notes.Children.Remove(_listOfTabs[i].Grid);
-            } 
+            }
             _listOfTabs.Clear();
         }
 
@@ -222,12 +254,11 @@ namespace Notepad
         {
             if (_selectedNote == null)
                 return;
-            
+
             for (int i = 0; i < _selectedNote.NoteContent.ListOfNoteTabs.Count; i++)
             {
                 CreateTab(_selectedNote.NoteContent.ListOfNoteTabs[i].Note, _selectedNote.NoteContent.ListOfNoteTabs[i].Done);
             }
-            
         }
         private Note FindNoteFromButton(Button button)
         {
@@ -245,9 +276,9 @@ namespace Notepad
             SaveNote();
 
             Button clickedButton = sender as Button;
-            for (int i  = 0; i< _listOfNotes.Count;i++)
+            for (int i = 0; i < _listOfNotes.Count; i++)
             {
-                if(clickedButton == _listOfNotes[i].NoteReferences.Button)
+                if (clickedButton == _listOfNotes[i].NoteReferences.Button)
                 {
                     _listOfNotes[i].NoteReferences.Button.Background = new SolidColorBrush(Color.FromRgb(73, 76, 108));
                 }
@@ -256,9 +287,8 @@ namespace Notepad
                     _listOfNotes[i].NoteReferences.Button.Background = new SolidColorBrush(Color.FromArgb(27, 25, 37, 100));
                 }
             }
-        
             _selectedNote = FindNoteFromButton(clickedButton);
-            
+
             CleanTabs();
             LoadNotes();
         }
@@ -267,7 +297,7 @@ namespace Notepad
         {
             Button clickedButton = sender as Button;
 
-            foreach (Tab tab in _listOfTabs) 
+            foreach (Tab tab in _listOfTabs)
             {
                 if (clickedButton == tab.DeleteButton)
                 {
@@ -280,13 +310,17 @@ namespace Notepad
 
         private void ButtonExit_Click(object sender, RoutedEventArgs args)
         {
-            Close();
-           
+            if (MessageBox.Show("Do you want to close this window?","Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                Close(); 
+            }
+          
+            
         }
 
         private void ButtonMinimize_Click(object sender, RoutedEventArgs args)
         {
-           WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
         private void CheckBoxDone_Check(object sender, RoutedEventArgs args)
@@ -303,10 +337,10 @@ namespace Notepad
             }
             SaveNote();
         }
-        
+
         private void BgColorOfTextBox(Tab tab)
         {
-            if(tab.CheckBox.IsChecked == true)
+            if (tab.CheckBox.IsChecked == true)
             {
                 tab.Grid.Background = new SolidColorBrush(Color.FromRgb(209, 255, 213));
                 tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(209, 255, 213));
@@ -323,7 +357,7 @@ namespace Notepad
             notes.Children.Remove(tab.Grid);
             _listOfTabs.Remove(tab);
         }
-        private void ButtonAddTab_Click(object sender, RoutedEventArgs e)
+        private void EnableAddTabButton(object sender, RoutedEventArgs e)
         {
             SetAddTabButtonVisibility(true);
         }
@@ -333,9 +367,43 @@ namespace Notepad
             CreateTab("", false);
         }
 
+        private void PopUpWindowForSave()
+        {
+            TextBlock popupText = new TextBlock();
+            popupText.Text = " Saved ";
+            popupText.FontSize = 18;
+            popupText.Background = Brushes.LightGreen;
+            popupText.Foreground = Brushes.White;
+            myPopup.Child = popupText;
+          
+            myPopup.IsOpen = true;
+            myPopup_Opened();
+            
+        }
+
+
+        private void myPopup_Opened()
+        {
+            StartCloseTimer();
+        }
+
+        private void StartCloseTimer()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(3d);
+            timer.Tick += TimerTick;
+            timer.Start();
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            DispatcherTimer timer = (DispatcherTimer)sender;
+            timer.Stop();
+            timer.Tick -= TimerTick;
+            this.myPopup.IsOpen = false;
+        }
         private void CreateTab(string text, bool isChecked)
         {
-           
             TextBox newNote = new TextBox();
             CheckBox newCheckBox = new CheckBox();
             Button newButtonDelete = new Button();
@@ -344,12 +412,12 @@ namespace Notepad
 
             newButtonDelete.Click += ButtonDelete_Click;
             newCheckBox.Click += CheckBoxDone_Check;
-            
+
             rowDef.MinHeight = 15;
             newGrid.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
             newGrid.Margin = new Thickness(0, 0, 0, 20);
             newGrid.RowDefinitions.Add(rowDef);
-            
+
             ColumnDefinition colDef1 = new ColumnDefinition();
             ColumnDefinition colDef2 = new ColumnDefinition();
             ColumnDefinition colDef3 = new ColumnDefinition();
@@ -364,24 +432,24 @@ namespace Notepad
             newGrid.ColumnDefinitions.Add(colDef2);
             newGrid.ColumnDefinitions.Add(colDef3);
             newGrid.ColumnDefinitions.Add(colDef4);
-            
+
             newGrid.Margin = new Thickness(0, 5, 23, 5);
-          
+
             newCheckBox.Content = "Done";
             newCheckBox.Foreground = Brushes.Green;
             newCheckBox.IsChecked = isChecked;
-            newCheckBox.Margin = new Thickness(30,0,0,0);
+            newCheckBox.Margin = new Thickness(30, 0, 0, 0);
             newCheckBox.Width = 50;
             newCheckBox.Height = 40;
             newCheckBox.FontSize = 15;
-       
+
             newNote.Width = 550;
             newNote.TextWrapping = TextWrapping.Wrap;
             newNote.Margin = new Thickness(0, 5, 0, 5);
             newNote.Text = text;
             newNote.HorizontalAlignment = HorizontalAlignment.Left;
             newNote.BorderThickness = new Thickness(0, 0, 0, 0);
-            
+
             newButtonDelete.Width = 35;
             newButtonDelete.Height = 25;
             string buttonDeleteName = string.Format("X");
@@ -401,7 +469,7 @@ namespace Notepad
             Grid.SetRow(newButtonDelete, 0);
             Grid.SetColumn(newButtonDelete, 3);
 
-         
+
             newGrid.Children.Add(newNote);
             newGrid.Children.Add(newCheckBox);
             newGrid.Children.Add(newButtonDelete);
@@ -414,8 +482,8 @@ namespace Notepad
             tab.Grid = newGrid;
             BgColorOfTextBox(tab);
             _listOfTabs.Add(tab);
-
         }
-
     }
 }
+
+
