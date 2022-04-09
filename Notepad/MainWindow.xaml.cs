@@ -1,6 +1,9 @@
 ﻿
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +32,8 @@ namespace Notepad
         private Note _selectedNote;
         private Note _rightClickedNote;
         private SavingSystem _savingSystem;
+        string appFileName = "Notepad.exe";
+        string directory = Process.GetCurrentProcess().MainModule.FileName;
 
         public MainWindow()
         {
@@ -36,7 +41,22 @@ namespace Notepad
             Setup();
 
         }
-   
+        public static void AddStartup(string appName, string path)
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey
+                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+            {
+                key.SetValue(appName, "\"" + path + "\"");
+            }
+        }
+        public static void RemoveStartup(string appName)
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey
+                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+            {
+                key.DeleteValue(appName, false);
+            }
+        }
         /// <summary>
         /// Function that checks if there is a saved note button in the file, sends a button as a parameter to the Function "CreateNoteButton()".
         /// Also disables the "Add Tab" button because there is no selected Note Button when you run app for the first time.
@@ -59,7 +79,13 @@ namespace Notepad
                     CreateNoteButton(notes.Notes[i]);
                 }
             }
-            
+
+
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey
+                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+            {
+                SetStartupButtonsColor(key.GetValue(appFileName) != null);
+            }
         }
 
         /// <summary>
@@ -92,7 +118,7 @@ namespace Notepad
         {
             TextBox textBoxForNoteName = new TextBox();
             Button buttonForNoteName = new Button();
-
+           
             textBoxForNoteName.IsEnabled = false;
             textBoxForNoteName.TextWrapping = TextWrapping.Wrap;
             textBoxForNoteName.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
@@ -340,15 +366,20 @@ namespace Notepad
 
         private void BgColorOfTextBox(Tab tab)
         {
+            
             if (tab.CheckBox.IsChecked == true)
             {
+                tab.CheckBox.Foreground = Brushes.Green;
+                tab.CheckBox.Content = "DONE";
                 tab.Grid.Background = new SolidColorBrush(Color.FromRgb(209, 255, 213));
                 tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(209, 255, 213));
             }
             else
             {
-                tab.Grid.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                tab.CheckBox.Foreground = new SolidColorBrush(Color.FromRgb(30, 30, 30));
+                tab.CheckBox.Content = "TO-DO";
+                tab.Grid.Background = new SolidColorBrush(Color.FromRgb(220, 222, 246));
+                tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(220, 222, 246));
             }
         }
 
@@ -380,8 +411,26 @@ namespace Notepad
             myPopup_Opened();
             
         }
+        private void SetStartupButtonsColor(bool isStartupEnabled)
+        {
+            YesButton.Foreground = isStartupEnabled ? Brushes.Green : Brushes.White;
+            NoButton.Foreground = isStartupEnabled ? Brushes.White : Brushes.Red;
+        }
+        private void OpenWinOnStartButton_Clicked(object sender, RoutedEventArgs args)
+        {
+            Button clickedButton = sender as Button;
+            if (clickedButton == YesButton)
+            {
+                AddStartup(appFileName, directory);
+            }
+            if (clickedButton == NoButton)
+            {
+                RemoveStartup(appFileName);
+            }
 
+            SetStartupButtonsColor(clickedButton == YesButton);
 
+        }
         private void myPopup_Opened()
         {
             StartCloseTimer();
@@ -414,7 +463,6 @@ namespace Notepad
             newCheckBox.Click += CheckBoxDone_Check;
 
             rowDef.MinHeight = 15;
-            newGrid.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
             newGrid.Margin = new Thickness(0, 0, 0, 20);
             newGrid.RowDefinitions.Add(rowDef);
 
@@ -432,10 +480,11 @@ namespace Notepad
             newGrid.ColumnDefinitions.Add(colDef2);
             newGrid.ColumnDefinitions.Add(colDef3);
             newGrid.ColumnDefinitions.Add(colDef4);
-
+         
             newGrid.Margin = new Thickness(0, 5, 23, 5);
 
-            newCheckBox.Content = "Done";
+            newCheckBox.Content = "TO-DO";
+            newCheckBox.FontWeight = FontWeights.Bold;
             newCheckBox.Foreground = Brushes.Green;
             newCheckBox.IsChecked = isChecked;
             newCheckBox.Margin = new Thickness(30, 0, 0, 0);
@@ -447,12 +496,14 @@ namespace Notepad
             newNote.TextWrapping = TextWrapping.Wrap;
             newNote.Margin = new Thickness(0, 5, 0, 5);
             newNote.Text = text;
+            newNote.FontSize = 14;
             newNote.HorizontalAlignment = HorizontalAlignment.Left;
             newNote.BorderThickness = new Thickness(0, 0, 0, 0);
 
             newButtonDelete.Width = 35;
             newButtonDelete.Height = 25;
             string buttonDeleteName = string.Format("X");
+            newButtonDelete.FontWeight = FontWeights.Bold;
 
             newButtonDelete.Content = buttonDeleteName;
             newButtonDelete.Foreground = Brushes.DimGray;

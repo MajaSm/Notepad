@@ -113,16 +113,20 @@
                 FontFamily="Bold"
                 Foreground="WhiteSmoke" 
                 HorizontalAlignment="Left" 
-                Margin="10,5,0,0" 
+                Margin="10,10,0,0" 
                 VerticalAlignment="Top" 
                 Width="36" Height="26" 
                 RenderTransformOrigin="0.194,-0.346" 
                     />
-            <Popup Name="myPopup" PlacementTarget="{Binding ElementName=ButtonSaveAll}" Placement="Right"  >
+            <Popup Name="myPopup" PlacementTarget="{Binding ElementName=ButtonSaveAll}" Placement="Bottom"  >
                 
 
             </Popup>
-
+            <Button Click="OpenWinOnStartButton_Clicked"  x:Name="YesButton" Content="Yes" BorderBrush="Gray"  Foreground="White"
+                Background="#272537" HorizontalAlignment="Left" Margin="185,10,0,0" VerticalAlignment="Top" Width="28" Height="23"/>
+            <Button Click="OpenWinOnStartButton_Clicked" x:Name="NoButton" Content="No" BorderBrush="Gray"  Foreground="White"
+                Background="#272537" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Width="28" Height="23"/>
+            <Label Content="Open on Windows start:" HorizontalAlignment="Left" Margin="46,7,0,0" VerticalAlignment="Top" Foreground="White"/>
 
         </Grid>
 
