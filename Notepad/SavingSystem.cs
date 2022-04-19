@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Notepad
 {
@@ -14,7 +15,7 @@ namespace Notepad
       
         public Note SaveNotes(List<Note> notes)
         {
-            _fileName = String.Format(@"{0}\note.json",Environment.CurrentDirectory);
+            _fileName = String.Format(@"{0}\note.json", AppContext.BaseDirectory);
 
             List<NoteContent> listOfNoteContents = new List<NoteContent>();
             for(int i = 0; i < notes.Count; i++)
@@ -33,7 +34,7 @@ namespace Notepad
 
         public ListOfNotes LoadNoteData()
         {
-            _fileName = String.Format(@"{0}\note.json", Environment.CurrentDirectory);
+            _fileName = String.Format(@"{0}\note.json", AppContext.BaseDirectory);
 
             if (File.Exists(_fileName))
             {

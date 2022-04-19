@@ -39,6 +39,7 @@ namespace Notepad
         {
             InitializeComponent();
             Setup();
+            MessageBoxForExit.Visibility = Visibility.Hidden;
 
         }
         public static void AddStartup(string appName, string path)
@@ -64,6 +65,7 @@ namespace Notepad
         /// </summary>
         private void Setup()
         {
+            
             KeyDown += PressEnter;
             MouseLeftButtonDown += OnMouseLeftClick;
 
@@ -336,13 +338,22 @@ namespace Notepad
 
         private void ButtonExit_Click(object sender, RoutedEventArgs args)
         {
-            if (MessageBox.Show("Do you want to close this window?","Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+           MessageBoxForExit.Visibility = Visibility.Visible;
+            Button button = sender as Button;
+            if(button == YesButtonForExit)
             {
-                Close(); 
+                Close();
             }
+            if(button == NoButtonForExit)
+            {
+                MessageBoxForExit.Visibility = Visibility.Hidden;
+            }
+
+          
           
             
         }
+      
 
         private void ButtonMinimize_Click(object sender, RoutedEventArgs args)
         {

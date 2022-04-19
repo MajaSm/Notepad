@@ -29,7 +29,7 @@
                 <StackPanel Grid.Row="1" x:Name="noteName">
                 </StackPanel>
             </ScrollViewer>
-           
+
             <Button    Background="#272537"
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center" 
@@ -51,7 +51,7 @@
                        Margin="559,36,30,0" Height="40" Width="182"
                         Name="ButtonAddTab"
                        Click="TextBlock_Click">
-                        Add new tab
+                Add new tab
             </Button>
 
             <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,20,0,0" >
@@ -87,7 +87,7 @@
                     RenderTransformOrigin="0.194,-0.346" />
 
             <Canvas HorizontalAlignment="Left" Height="624" Grid.Row="1" VerticalAlignment="Top" Width="13" Margin="260,0,0,-29">
-                <Canvas Height="300" Width="300">
+                <Canvas Height="300" Width="13">
                     <Line
                          X1="0" Y1="0"
                          X2="0" Y2="610"
@@ -119,7 +119,7 @@
                 RenderTransformOrigin="0.194,-0.346" 
                     />
             <Popup Name="myPopup" PlacementTarget="{Binding ElementName=ButtonSaveAll}" Placement="Bottom"  >
-                
+
 
             </Popup>
             <Button Click="OpenWinOnStartButton_Clicked"  x:Name="YesButton" Content="Yes" BorderBrush="Gray"  Foreground="White"
@@ -128,6 +128,56 @@
                 Background="#272537" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Width="28" Height="23"/>
             <Label Content="Open on Windows start:" HorizontalAlignment="Left" Margin="46,7,0,0" VerticalAlignment="Top" Foreground="White"/>
 
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Name="MessageBoxForExit" Background="#F4F4F4" CornerRadius="20" BorderBrush="#A60603 " BorderThickness="2" Grid.Column="1" Margin="181.2,163,306.2,283.4" Grid.Row="1" Height="148">
+                <Grid Grid.Column="1" HorizontalAlignment="Left" Height="148" Grid.Row="1" VerticalAlignment="Top" Width="284" Margin="-1.6,-1.6,-2.4,-1.6">
+                    <Line
+                      X1="100" Y1="0"
+                      X2="1090" Y2="0"
+                      Stroke="#A60603"
+                     StrokeThickness="3" Margin="-100,32,3,113" >
+
+                    </Line>
+
+                    <Button Click="ButtonExit_Click"  
+                                x:Name="YesButtonForExit"
+                                Content="Yes" 
+                                BorderBrush="#292B5B"  
+                                Foreground="Black"
+                                Background="#B0B1B8" 
+                                HorizontalAlignment="Left" 
+                                Margin="59,104,0,0" 
+                                VerticalAlignment="Top"
+                                Width="61" 
+                                Height="23"/>
+                    <Button Click="ButtonExit_Click" 
+                                x:Name="NoButtonForExit" 
+                                Content="No" 
+                                BorderBrush="#292B5B"  
+                                Foreground="Black"
+                                Background="#B0B1B8" 
+                                HorizontalAlignment="Left" 
+                                Margin="165,104,0,0" 
+                                VerticalAlignment="Top" 
+                                Width="61" 
+                                Height="23"/>
+                    <Label Content="Are you sure you want to close the Application?" 
+                           Foreground="Black"
+                           HorizontalAlignment="Left" 
+                           Margin="10,46,0,0" 
+                           VerticalAlignment="Top"
+                               
+                               />
+                    <Label Content="Confirmation" 
+                           HorizontalAlignment="Left" 
+                           Margin="10,0,0,0" 
+                           FontSize="16"
+                           VerticalAlignment="Top"
+                           
+                           />
+
+
+                </Grid>
+            </Border>
         </Grid>
 
     </Border>
