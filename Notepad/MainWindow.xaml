@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Height="700" Width="1050"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         WindowStyle="None"
         Background="Transparent" 
         WindowStartupLocation="CenterScreen"
@@ -36,12 +36,16 @@
                        BorderBrush="#272537"
                        Foreground="White" 
                        FontSize="22" 
-                       Margin="31,36,60,0" Height="40" Width="182"
+                       Margin="46,36,45,0" Height="40" Width="182"
                        Name="ButtonAddScenario"
+                       Style="{DynamicResource ButtonStyle1}"
                        Click="ButtonAddNote_Click" 
-                       RenderTransformOrigin="0.497,1.225">Add new note</Button>
+                       RenderTransformOrigin="0.497,1.225"  >Add new note
+            
+            </Button>
 
-            <Button Grid.Column="1"
+            <Button Style="{DynamicResource ButtonStyle1}" 
+                Grid.Column="1"
                        Background="#272537"
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Center" 
@@ -59,7 +63,8 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <Button Name ="ButtonExit" 
+            <Button Style="{DynamicResource ButtonStyle2}"
+                Name ="ButtonExit" 
                     Content="X" Click="ButtonExit_Click" 
                     BorderBrush="Gray" Background="#272537" 
                     FontSize="17"
@@ -71,7 +76,8 @@
                     Width="36" Height="26" 
                     RenderTransformOrigin="0.528,-0.038"/>
 
-            <Button Name="ButtonMinimize" 
+            <Button Style="{DynamicResource ButtonStyle2}"
+                Name="ButtonMinimize" 
                     Content="__________" 
                     Click="ButtonMinimize_Click" 
                     BorderBrush="Gray" 
@@ -91,7 +97,7 @@
                     <Line
                          X1="0" Y1="0"
                          X2="0" Y2="610"
-                         Stroke="DimGray"
+                         Stroke="#E7185F"
                          StrokeThickness="0.3"/>
                 </Canvas>
             </Canvas>
@@ -100,13 +106,13 @@
                 <Line
                       X1="0" Y1="0"
                       X2="1029" Y2="0"
-                      Stroke="DimGray"
+                      Stroke="#E7185F"
                      StrokeThickness="0.3"/>
             </Canvas>
             <Button x:Name="ButtonSaveAll" 
                 Content="💾" 
                 Click="ButtonSaveAll_Click" 
-                
+                Style="{DynamicResource ButtonStyle2}"
                 BorderBrush="Gray" 
                 Background="#272537" 
                 FontSize="15" 
@@ -117,57 +123,61 @@
                 VerticalAlignment="Top" 
                 Width="36" Height="26" 
                 RenderTransformOrigin="0.194,-0.346" 
-                    />
+                 />
             <Popup Name="myPopup" PlacementTarget="{Binding ElementName=ButtonSaveAll}" Placement="Bottom"  >
 
 
             </Popup>
-            <Button Click="OpenWinOnStartButton_Clicked"  x:Name="YesButton" Content="Yes" BorderBrush="Gray"  Foreground="White"
+            <Button   Style="{DynamicResource ButtonStyle2}"
+                Click="OpenWinOnStartButton_Clicked"  x:Name="YesButton" Content="Yes" BorderBrush="Gray"  Foreground="White"
                 Background="#272537" HorizontalAlignment="Left" Margin="185,10,0,0" VerticalAlignment="Top" Width="28" Height="23"/>
-            <Button Click="OpenWinOnStartButton_Clicked" x:Name="NoButton" Content="No" BorderBrush="Gray"  Foreground="White"
+            <Button Style="{DynamicResource ButtonStyle2}" Click="OpenWinOnStartButton_Clicked" x:Name="NoButton" Content="No" BorderBrush="Gray"  Foreground="White"
                 Background="#272537" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Width="28" Height="23"/>
             <Label Content="Open on Windows start:" HorizontalAlignment="Left" Margin="46,7,0,0" VerticalAlignment="Top" Foreground="White"/>
 
-            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Name="MessageBoxForExit" Background="#F4F4F4" CornerRadius="20" BorderBrush="#A60603 " BorderThickness="2" Grid.Column="1" Margin="181.2,163,306.2,283.4" Grid.Row="1" Height="148">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Name="MessageBoxForExit" Background="#272537" CornerRadius="20" BorderBrush="#E7185F " BorderThickness="2" Grid.Column="1" Margin="131,171,356,276" Grid.Row="1" Height="148">
                 <Grid Grid.Column="1" HorizontalAlignment="Left" Height="148" Grid.Row="1" VerticalAlignment="Top" Width="284" Margin="-1.6,-1.6,-2.4,-1.6">
                     <Line
                       X1="100" Y1="0"
                       X2="1090" Y2="0"
-                      Stroke="#A60603"
+                      Stroke="#E7185F"
                      StrokeThickness="3" Margin="-100,32,3,113" >
 
                     </Line>
 
-                    <Button Click="ButtonExit_Click"  
+                    <Button Style="{DynamicResource ButtonStyle2}"
+                        Click="ButtonExit_Click"  
                                 x:Name="YesButtonForExit"
                                 Content="Yes" 
-                                BorderBrush="#292B5B"  
-                                Foreground="Black"
-                                Background="#B0B1B8" 
+                                BorderBrush="Black"  
+                                Foreground="WhiteSmoke"
+                                Background="#333141" 
                                 HorizontalAlignment="Left" 
                                 Margin="59,104,0,0" 
                                 VerticalAlignment="Top"
                                 Width="61" 
                                 Height="23"/>
-                    <Button Click="ButtonExit_Click" 
+                    <Button Style="{DynamicResource ButtonStyle2}"
+                        Click="ButtonExit_Click" 
                                 x:Name="NoButtonForExit" 
                                 Content="No" 
-                                BorderBrush="#292B5B"  
-                                Foreground="Black"
-                                Background="#B0B1B8" 
+                                BorderBrush="Black"  
+                                Foreground="WhiteSmoke"
+                                Background="#333141" 
                                 HorizontalAlignment="Left" 
                                 Margin="165,104,0,0" 
                                 VerticalAlignment="Top" 
                                 Width="61" 
                                 Height="23"/>
                     <Label Content="Are you sure you want to close the Application?" 
-                           Foreground="Black"
+                           Foreground="WhiteSmoke"
                            HorizontalAlignment="Left" 
                            Margin="10,46,0,0" 
                            VerticalAlignment="Top"
                                
                                />
                     <Label Content="Confirmation" 
+                           Foreground="WhiteSmoke"
                            HorizontalAlignment="Left" 
                            Margin="10,0,0,0" 
                            FontSize="16"
@@ -178,8 +188,12 @@
 
                 </Grid>
             </Border>
+            
         </Grid>
 
     </Border>
+
+
+    
 
 </Window>

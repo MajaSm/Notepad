@@ -123,7 +123,7 @@ namespace Notepad
            
             textBoxForNoteName.IsEnabled = false;
             textBoxForNoteName.TextWrapping = TextWrapping.Wrap;
-            textBoxForNoteName.Background = new SolidColorBrush(Color.FromArgb(0, 255, 255, 255));
+            textBoxForNoteName.Background = new SolidColorBrush(Color.FromArgb(0,0,0, 0));
             textBoxForNoteName.BorderThickness = new Thickness(0, 0, 0, 0);
             textBoxForNoteName.FontSize = 16;
             textBoxForNoteName.HorizontalContentAlignment = HorizontalAlignment.Center;
@@ -131,12 +131,16 @@ namespace Notepad
             textBoxForNoteName.Foreground = Brushes.White;
             textBoxForNoteName.ContextMenu = new ContextMenu();
 
-            buttonForNoteName.Width = 200;
+            buttonForNoteName.Width = 258;
             buttonForNoteName.MinHeight = 50;
             buttonForNoteName.Foreground = Brushes.White;
             buttonForNoteName.Height = textBoxForNoteName.Height;
-            buttonForNoteName.Background = new SolidColorBrush(Color.FromArgb(27, 25, 37, 100));
-            buttonForNoteName.Margin = new Thickness(30, 5, 10, 10);
+            buttonForNoteName.Background = new SolidColorBrush(Color.FromRgb(39, 37, 55));
+            buttonForNoteName.BorderThickness = new Thickness(0,0,0,0);
+           
+            buttonForNoteName.Style = buttonForNoteName.TryFindResource("FocusVisual") as Style;
+            buttonForNoteName.Style = buttonForNoteName.TryFindResource("ButtonStyle1") as Style;
+
 
             string ScenarioNameDisplay = string.Format("Note{0}", _listOfNotes.Count);
 
@@ -165,6 +169,8 @@ namespace Notepad
             buttonForNoteName.Click += OnClickNameOfNoteButton;
             buttonForNoteName.MouseRightButtonDown += OnRightClickNameOfNote;
         }
+
+       
 
         /// <summary>
         /// Creating menu for rename and delete Note Button
@@ -308,11 +314,13 @@ namespace Notepad
             {
                 if (clickedButton == _listOfNotes[i].NoteReferences.Button)
                 {
-                    _listOfNotes[i].NoteReferences.Button.Background = new SolidColorBrush(Color.FromRgb(73, 76, 108));
+                    _listOfNotes[i].NoteReferences.NameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(231, 24, 95));
+                    _listOfNotes[i].NoteReferences.NameTextBox.FontWeight = FontWeights.Bold;
                 }
                 else
                 {
-                    _listOfNotes[i].NoteReferences.Button.Background = new SolidColorBrush(Color.FromArgb(27, 25, 37, 100));
+                    _listOfNotes[i].NoteReferences.NameTextBox.Foreground = Brushes.White ;
+                    _listOfNotes[i].NoteReferences.NameTextBox.FontWeight = FontWeights.Normal;
                 }
             }
             _selectedNote = FindNoteFromButton(clickedButton);
@@ -382,15 +390,17 @@ namespace Notepad
             {
                 tab.CheckBox.Foreground = Brushes.Green;
                 tab.CheckBox.Content = "DONE";
-                tab.Grid.Background = new SolidColorBrush(Color.FromRgb(209, 255, 213));
-                tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(209, 255, 213));
+                tab.TextBox.Foreground = Brushes.Black;
+                tab.Grid.Background = new SolidColorBrush(Color.FromRgb(120, 175, 133));
+                tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(120, 175, 133));
             }
             else
             {
-                tab.CheckBox.Foreground = new SolidColorBrush(Color.FromRgb(30, 30, 30));
+                tab.CheckBox.Foreground = new SolidColorBrush(Color.FromRgb(231, 24, 95));
                 tab.CheckBox.Content = "TO-DO";
-                tab.Grid.Background = new SolidColorBrush(Color.FromRgb(220, 222, 246));
-                tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(220, 222, 246));
+                tab.TextBox.Foreground = new SolidColorBrush(Color.FromRgb(209, 208, 215));
+                tab.Grid.Background = new SolidColorBrush(Color.FromRgb(57, 54, 79));
+                tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(57, 54, 79));
             }
         }
 
@@ -508,6 +518,7 @@ namespace Notepad
             newNote.Margin = new Thickness(0, 5, 0, 5);
             newNote.Text = text;
             newNote.FontSize = 14;
+            newNote.Foreground = new SolidColorBrush(Color.FromRgb(209, 208, 215));
             newNote.HorizontalAlignment = HorizontalAlignment.Left;
             newNote.BorderThickness = new Thickness(0, 0, 0, 0);
 
@@ -517,12 +528,16 @@ namespace Notepad
             newButtonDelete.FontWeight = FontWeights.Bold;
 
             newButtonDelete.Content = buttonDeleteName;
-            newButtonDelete.Foreground = Brushes.DimGray;
-            newButtonDelete.Background = Brushes.WhiteSmoke;
+            newButtonDelete.Foreground = Brushes.WhiteSmoke;
+            newButtonDelete.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
             newButtonDelete.BorderThickness = new Thickness(0.6);
+            newButtonDelete.BorderBrush = Brushes.WhiteSmoke;
             newButtonDelete.VerticalAlignment = VerticalAlignment.Center;
             newButtonDelete.HorizontalAlignment = HorizontalAlignment.Right;
             newButtonDelete.Margin = new Thickness(0, 0, 5, 0);
+            newButtonDelete.Style = newButtonDelete.TryFindResource("FocusVisual") as Style;
+            newButtonDelete.Style = newButtonDelete.TryFindResource("ButtonStyle2") as Style;
+
 
             Grid.SetRow(newNote, 0);
             Grid.SetColumn(newNote, 0);

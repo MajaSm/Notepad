@@ -5,13 +5,23 @@
     <Application.Resources> 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary x:Name="NotepadItemTheme" >
+                
+                <ResourceDictionary x:Name="NotepadItemTheme">
                     <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="Theme/StackOfNotepadsTheme/NotepadItemTheme.xaml"/>
-                        
+                        <ResourceDictionary Source="Theme/StackOfNotepadsTheme/NotepadItemTheme.xaml" />
                     </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
+                
+                <ResourceDictionary x:Name="ButtonStyles" >
+                        <ResourceDictionary.MergedDictionaries>
+                            <ResourceDictionary Source="Theme/StackOfNotepadsTheme/ButtonStyles.xaml" />
+
+                        </ResourceDictionary.MergedDictionaries>
+
+                    </ResourceDictionary>
+                
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
