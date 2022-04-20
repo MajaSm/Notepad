@@ -503,7 +503,7 @@ namespace Notepad
             Button newButtonDelete = new Button();
             Grid newGrid = new Grid();
             RowDefinition rowDef = new RowDefinition();
-
+            newNote.AcceptsReturn = true;
             newButtonDelete.Click += ButtonDelete_Click;
             newCheckBox.Click += CheckBoxDone_Check;
 
