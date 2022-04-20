@@ -17,6 +17,7 @@ namespace Notepad
     public partial class MainWindow : Window
     {
 
+
         public struct Tab
         {
             public TextBox TextBox;
@@ -65,10 +66,8 @@ namespace Notepad
         /// </summary>
         private void Setup()
         {
-            
             KeyDown += PressEnter;
             MouseLeftButtonDown += OnMouseLeftClick;
-
             SetAddTabButtonVisibility(false);
 
             _savingSystem = new SavingSystem();
@@ -120,10 +119,10 @@ namespace Notepad
         {
             TextBox textBoxForNoteName = new TextBox();
             Button buttonForNoteName = new Button();
-           
+
             textBoxForNoteName.IsEnabled = false;
             textBoxForNoteName.TextWrapping = TextWrapping.Wrap;
-            textBoxForNoteName.Background = new SolidColorBrush(Color.FromArgb(0,0,0, 0));
+            textBoxForNoteName.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
             textBoxForNoteName.BorderThickness = new Thickness(0, 0, 0, 0);
             textBoxForNoteName.FontSize = 16;
             textBoxForNoteName.HorizontalContentAlignment = HorizontalAlignment.Center;
@@ -136,8 +135,8 @@ namespace Notepad
             buttonForNoteName.Foreground = Brushes.White;
             buttonForNoteName.Height = textBoxForNoteName.Height;
             buttonForNoteName.Background = new SolidColorBrush(Color.FromRgb(39, 37, 55));
-            buttonForNoteName.BorderThickness = new Thickness(0,0,0,0);
-           
+            buttonForNoteName.BorderThickness = new Thickness(0, 0, 0, 0);
+
             buttonForNoteName.Style = buttonForNoteName.TryFindResource("FocusVisual") as Style;
             buttonForNoteName.Style = buttonForNoteName.TryFindResource("ButtonStyle1") as Style;
 
@@ -163,14 +162,26 @@ namespace Notepad
             {
                 note.NoteContent = noteContent;
             }
+
+            
             _listOfNotes.Add(note);
 
             buttonForNoteName.Click += EnableAddTabButton;
             buttonForNoteName.Click += OnClickNameOfNoteButton;
             buttonForNoteName.MouseRightButtonDown += OnRightClickNameOfNote;
+            buttonForNoteName.MouseEnter += (sender,e) => OnMouseEnterOverNameOfNote(sender, e, textBoxForNoteName);
+            buttonForNoteName.MouseLeave += (sender, e) => OnMouseLeaveOverNameOfNote(sender, e, textBoxForNoteName);
         }
 
-       
+        public void OnMouseEnterOverNameOfNote(object sender, MouseEventArgs e, TextBox textBoxForNoteName)
+        {
+            textBoxForNoteName.FontSize = 20;
+        }
+
+        public void OnMouseLeaveOverNameOfNote(object sender, MouseEventArgs e, TextBox textBoxForNoteName)
+        {
+            textBoxForNoteName.FontSize = 16;
+        }
 
         /// <summary>
         /// Creating menu for rename and delete Note Button
@@ -184,7 +195,7 @@ namespace Notepad
             DisableNoteTextbox(_rightClickedNote);
 
             _rightClickedNote = FindNoteFromButton(clickedButton);
-
+            
             ContextMenu contextMenu = new ContextMenu();
             MenuItem menuItemRename = new MenuItem();
             MenuItem menuItemDelete = new MenuItem();
@@ -199,6 +210,8 @@ namespace Notepad
             contextMenu.Items.Add(menuItemDelete);
 
             clickedButton.ContextMenu = contextMenu;
+
+            contextMenu.Style = contextMenu.TryFindResource("ContextMenu") as Style;
         }
 
         private void OnDeleteNoteClicked(object sender, RoutedEventArgs e)
@@ -217,7 +230,12 @@ namespace Notepad
             noteName.Children.Remove(note.NoteReferences.Button);
             _listOfNotes.Remove(note);
             SetAddTabButtonVisibility(false);
-            CleanTabs();
+
+            if(_selectedNote == _rightClickedNote)
+            {
+                CleanTabs();
+            }
+                
         }
 
         private void OnRenameClicked(object sender, EventArgs eventArgs)
@@ -244,7 +262,7 @@ namespace Notepad
             PopUpWindowForSave();
             SaveNote();
             _savingSystem.SaveNotes(_listOfNotes);
-            
+
         }
         /// <summary>
         /// Function that caches values of Tabs and value of CheckBox for exact Note Button in the ListOfNoteTabs.
@@ -276,6 +294,7 @@ namespace Notepad
 
         private void CleanTabs()
         {
+
             for (int i = 0; i < _listOfTabs.Count; i++)
             {
                 _listOfTabs[i].Grid.Children.Clear();
@@ -319,7 +338,7 @@ namespace Notepad
                 }
                 else
                 {
-                    _listOfNotes[i].NoteReferences.NameTextBox.Foreground = Brushes.White ;
+                    _listOfNotes[i].NoteReferences.NameTextBox.Foreground = Brushes.White;
                     _listOfNotes[i].NoteReferences.NameTextBox.FontWeight = FontWeights.Normal;
                 }
             }
@@ -346,22 +365,19 @@ namespace Notepad
 
         private void ButtonExit_Click(object sender, RoutedEventArgs args)
         {
-           MessageBoxForExit.Visibility = Visibility.Visible;
+            MessageBoxForExit.Visibility = Visibility.Visible;
             Button button = sender as Button;
-            if(button == YesButtonForExit)
+            if (button == YesButtonForExit)
             {
                 Close();
             }
-            if(button == NoButtonForExit)
+            if (button == NoButtonForExit)
             {
                 MessageBoxForExit.Visibility = Visibility.Hidden;
             }
 
-          
-          
-            
         }
-      
+
 
         private void ButtonMinimize_Click(object sender, RoutedEventArgs args)
         {
@@ -385,22 +401,30 @@ namespace Notepad
 
         private void BgColorOfTextBox(Tab tab)
         {
-            
+
             if (tab.CheckBox.IsChecked == true)
             {
                 tab.CheckBox.Foreground = Brushes.Green;
                 tab.CheckBox.Content = "DONE";
                 tab.TextBox.Foreground = Brushes.Black;
+                tab.DeleteButton.BorderBrush = Brushes.Black;
+                tab.DeleteButton.Foreground = Brushes.Black;
                 tab.Grid.Background = new SolidColorBrush(Color.FromRgb(120, 175, 133));
                 tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(120, 175, 133));
+                tab.DeleteButton.Style = tab.DeleteButton.TryFindResource("FocusVisual") as Style;
+                tab.DeleteButton.Style = tab.DeleteButton.TryFindResource("ButtonStyle3") as Style;
             }
             else
             {
                 tab.CheckBox.Foreground = new SolidColorBrush(Color.FromRgb(231, 24, 95));
                 tab.CheckBox.Content = "TO-DO";
+                tab.DeleteButton.BorderBrush = Brushes.WhiteSmoke;
+                tab.DeleteButton.Foreground = Brushes.WhiteSmoke;
                 tab.TextBox.Foreground = new SolidColorBrush(Color.FromRgb(209, 208, 215));
                 tab.Grid.Background = new SolidColorBrush(Color.FromRgb(57, 54, 79));
                 tab.TextBox.Background = new SolidColorBrush(Color.FromRgb(57, 54, 79));
+                tab.DeleteButton.Style = tab.DeleteButton.TryFindResource("FocusVisual") as Style;
+                tab.DeleteButton.Style = tab.DeleteButton.TryFindResource("ButtonStyle2") as Style;
             }
         }
 
@@ -427,10 +451,10 @@ namespace Notepad
             popupText.Background = Brushes.LightGreen;
             popupText.Foreground = Brushes.White;
             myPopup.Child = popupText;
-          
+
             myPopup.IsOpen = true;
             myPopup_Opened();
-            
+
         }
         private void SetStartupButtonsColor(bool isStartupEnabled)
         {
@@ -470,7 +494,7 @@ namespace Notepad
             DispatcherTimer timer = (DispatcherTimer)sender;
             timer.Stop();
             timer.Tick -= TimerTick;
-            this.myPopup.IsOpen = false;
+            myPopup.IsOpen = false;
         }
         private void CreateTab(string text, bool isChecked)
         {
@@ -501,7 +525,7 @@ namespace Notepad
             newGrid.ColumnDefinitions.Add(colDef2);
             newGrid.ColumnDefinitions.Add(colDef3);
             newGrid.ColumnDefinitions.Add(colDef4);
-         
+
             newGrid.Margin = new Thickness(0, 5, 23, 5);
 
             newCheckBox.Content = "TO-DO";
@@ -535,8 +559,6 @@ namespace Notepad
             newButtonDelete.VerticalAlignment = VerticalAlignment.Center;
             newButtonDelete.HorizontalAlignment = HorizontalAlignment.Right;
             newButtonDelete.Margin = new Thickness(0, 0, 5, 0);
-            newButtonDelete.Style = newButtonDelete.TryFindResource("FocusVisual") as Style;
-            newButtonDelete.Style = newButtonDelete.TryFindResource("ButtonStyle2") as Style;
 
 
             Grid.SetRow(newNote, 0);
@@ -560,6 +582,24 @@ namespace Notepad
             BgColorOfTextBox(tab);
             _listOfTabs.Add(tab);
         }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+
+        }
+        private void SaveFromKeyboard(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                PopUpWindowForSave();
+                SaveNote();
+                _savingSystem.SaveNotes(_listOfNotes);
+            }
+        }
+
     }
 }
 
