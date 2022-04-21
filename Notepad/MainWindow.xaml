@@ -9,7 +9,7 @@
         WindowStyle="None"
         Background="Transparent" 
         WindowStartupLocation="CenterScreen"
-        AllowsTransparency="True"  MouseDown="Window_MouseDown" KeyDown="SaveFromKeyboard"
+        AllowsTransparency="True"  MouseDown="Window_MouseDown" KeyDown="SaveFromKeyboard" 
         >
 
     <Border CornerRadius="20" Background="#272537">

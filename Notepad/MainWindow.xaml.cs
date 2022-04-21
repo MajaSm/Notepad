@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -29,7 +30,7 @@ namespace Notepad
 
         List<Tab> _listOfTabs = new List<Tab>();
         List<Note> _listOfNotes = new List<Note>();
-
+        private Note _lastEditedNote;
         private Note _selectedNote;
         private Note _rightClickedNote;
         private SavingSystem _savingSystem;
@@ -75,13 +76,24 @@ namespace Notepad
 
             if (notes != null)
             {
+                
                 for (int i = 0; i < notes.Notes.Count; i++)
                 {
+                    
                     CreateNoteButton(notes.Notes[i]);
+                    
+                }
+                if(_listOfNotes.Count > 0)
+                {
+                    SetNoteAsSelected(_listOfNotes[0]);
                 }
             }
-
-
+          
+            if(_lastEditedNote != null)
+            {
+                _lastEditedNote.NoteReferences.NameTextBox.IsEnabled = false;
+            }
+            
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
             {
@@ -137,8 +149,9 @@ namespace Notepad
             buttonForNoteName.Background = new SolidColorBrush(Color.FromRgb(39, 37, 55));
             buttonForNoteName.BorderThickness = new Thickness(0, 0, 0, 0);
 
-            buttonForNoteName.Style = buttonForNoteName.TryFindResource("FocusVisual") as Style;
             buttonForNoteName.Style = buttonForNoteName.TryFindResource("ButtonStyle1") as Style;
+
+            textBoxForNoteName.Style = textBoxForNoteName.TryFindResource("TextBoxEnabledStyle") as Style;
 
 
             string ScenarioNameDisplay = string.Format("Note{0}", _listOfNotes.Count);
@@ -163,15 +176,20 @@ namespace Notepad
                 note.NoteContent = noteContent;
             }
 
-            
+
             _listOfNotes.Add(note);
 
             buttonForNoteName.Click += EnableAddTabButton;
             buttonForNoteName.Click += OnClickNameOfNoteButton;
             buttonForNoteName.MouseRightButtonDown += OnRightClickNameOfNote;
-            buttonForNoteName.MouseEnter += (sender,e) => OnMouseEnterOverNameOfNote(sender, e, textBoxForNoteName);
+            buttonForNoteName.MouseEnter += (sender, e) => OnMouseEnterOverNameOfNote(sender, e, textBoxForNoteName);
             buttonForNoteName.MouseLeave += (sender, e) => OnMouseLeaveOverNameOfNote(sender, e, textBoxForNoteName);
+
+            SetNoteAsSelected(note);
+
+            SetNoteTextEditState(note, true);
         }
+
 
         public void OnMouseEnterOverNameOfNote(object sender, MouseEventArgs e, TextBox textBoxForNoteName)
         {
@@ -237,15 +255,65 @@ namespace Notepad
             }
                 
         }
+        private void SetNoteAsSelected(Note note)
+        {
+            SaveNote();
+            _selectedNote = note;
+            CleanTabs();
+            LoadNotes();
+
+            for (int i = 0; i < _listOfNotes.Count; i++)
+            {
+                _listOfNotes[i].NoteReferences.NameTextBox.Foreground = Brushes.White;
+                _listOfNotes[i].NoteReferences.NameTextBox.FontWeight = FontWeights.Normal;
+            }
+
+            _selectedNote.NoteReferences.NameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(231, 24, 95));
+            _selectedNote.NoteReferences.NameTextBox.FontWeight = FontWeights.Bold;
+
+        }
+
+        private void SetNoteTextEditState(Note note, bool isEnabled)
+        {
+            if(_lastEditedNote != null )
+            {
+                _lastEditedNote.NoteReferences.NameTextBox.IsEnabled = false;
+            }
+
+            if (isEnabled)
+            {
+                note.NoteReferences.NameTextBox.IsEnabled = true;
+                SetFocusOnTextbox(note.NoteReferences.NameTextBox);
+                _lastEditedNote = note;
+            }
+            else
+            {
+                note.NoteReferences.NameTextBox.IsEnabled = false;
+            }
+        }
+
+        private async void SetFocusOnTextbox(TextBox textBox) 
+        {
+            while (true)
+            {
+                if(textBox.Focus())
+                {
+                    break;
+                }
+
+                await Task.Delay(100);
+            }
+        }
 
         private void OnRenameClicked(object sender, EventArgs eventArgs)
         {
-            _rightClickedNote.NoteReferences.NameTextBox.IsEnabled = true;
-            _rightClickedNote.NoteReferences.NameTextBox.Focus();
+            SetNoteTextEditState(_rightClickedNote, true);
         }
 
         private void OnMouseLeftClick(object sender, MouseEventArgs e)
         {
+            if(_lastEditedNote != null)
+            _lastEditedNote.NoteReferences.NameTextBox.IsEnabled = false;
             DisableNoteTextbox(_rightClickedNote);
         }
 
@@ -253,6 +321,7 @@ namespace Notepad
         {
             if (Key.Enter == e.Key)
             {
+                _lastEditedNote.NoteReferences.NameTextBox.IsEnabled = false;
                 DisableNoteTextbox(_rightClickedNote);
             }
         }
@@ -290,6 +359,7 @@ namespace Notepad
 
             note.NoteContent.Name = note.NoteReferences.NameTextBox.Text;
             note.NoteReferences.NameTextBox.IsEnabled = false;
+           
         }
 
         private void CleanTabs()
@@ -326,26 +396,9 @@ namespace Notepad
         }
         private void OnClickNameOfNoteButton(object sender, RoutedEventArgs args)
         {
-            SaveNote();
-
             Button clickedButton = sender as Button;
-            for (int i = 0; i < _listOfNotes.Count; i++)
-            {
-                if (clickedButton == _listOfNotes[i].NoteReferences.Button)
-                {
-                    _listOfNotes[i].NoteReferences.NameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(231, 24, 95));
-                    _listOfNotes[i].NoteReferences.NameTextBox.FontWeight = FontWeights.Bold;
-                }
-                else
-                {
-                    _listOfNotes[i].NoteReferences.NameTextBox.Foreground = Brushes.White;
-                    _listOfNotes[i].NoteReferences.NameTextBox.FontWeight = FontWeights.Normal;
-                }
-            }
-            _selectedNote = FindNoteFromButton(clickedButton);
-
-            CleanTabs();
-            LoadNotes();
+            
+            SetNoteAsSelected(FindNoteFromButton(clickedButton));
         }
 
         private void ButtonDelete_Click(object sender, RoutedEventArgs args)

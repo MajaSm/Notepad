@@ -19,22 +19,23 @@
     <SolidColorBrush x:Key="Button.Pressed.Background" Color="#181924"/>
         <SolidColorBrush x:Key="Button.Pressed.Border" Color="Transparent"/>
         <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="Transparent"/>
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
     <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Padding" Value="1"/>
         <Setter Property="Template">
-            <Setter.Value>
+        
+        <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter x:Name="contentPresenter" Focusable="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         
@@ -71,7 +72,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter x:Name="contentPresenter" Focusable="True" IsEnabled="True"  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsDefaulted" Value="true">
@@ -106,7 +107,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-                        <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter x:Name="contentPresenter" Focusable="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsDefaulted" Value="true">
@@ -129,101 +130,4 @@
         </Setter>
     </Style>
 
-    <Color x:Key="WindowColor">#1F2131</Color>
-    <Color x:Key="ContentAreaColorLight">#272537</Color>
-    <Color x:Key="ContentAreaColorDark">#272537</Color>
-
-    <Color x:Key="DisabledControlLightColor">#843751</Color>
-    <Color x:Key="DisabledControlDarkColor">#843751</Color>
-    <Color x:Key="DisabledForegroundColor">#843751</Color>
-
-    <Color x:Key="SelectedBackgroundColor">#1F2131</Color>
-    <Color x:Key="SelectedUnfocusedColor">#1F2131</Color>
-
-    <Color x:Key="ControlLightColor">#272537</Color>
-    <Color x:Key="ControlMediumColor">#272537</Color>
-    <Color x:Key="ControlDarkColor">#272537</Color>
-
-    <Color x:Key="ControlMouseOverColor">#1F2131</Color>
-    <Color x:Key="ControlPressedColor">#843751</Color>
-
-
-    <Color x:Key="GlyphColor">#843751</Color>
-    <Color x:Key="GlyphMouseOver">#843751</Color>
-
-    <!--Border colors-->
-    <Color x:Key="BorderLightColor">#843751</Color>
-    <Color x:Key="BorderMediumColor">#843751</Color>
-    <Color x:Key="BorderDarkColor">#843751</Color>
-
-    <Color x:Key="PressedBorderLightColor">#843751</Color>
-    <Color x:Key="PressedBorderDarkColor">#843751</Color>
-
-    <Color x:Key="DisabledBorderLightColor">#843751</Color>
-    <Color x:Key="DisabledBorderDarkColor">#843751</Color>
-
-    <Color x:Key="DefaultBorderBrushDarkColor">#843751</Color>
-
-    <!--Control-specific resources.-->
-    <Color x:Key="HeaderTopColor">#843751</Color>
-    <Color x:Key="DatagridCurrentCellBorderColor">#843751</Color>
-    <Color x:Key="SliderTrackDarkColor">#843751</Color>
-
-    <Color x:Key="NavButtonFrameColor">#843751</Color>
-
-    <LinearGradientBrush x:Key="MenuPopupBrush"
-                     EndPoint="0.5,1"
-                     StartPoint="0.5,0">
-        <GradientStop Color="{DynamicResource ControlLightColor}"
-                Offset="0" />
-        <GradientStop Color="{DynamicResource ControlMediumColor}"
-                Offset="0.5" />
-        <GradientStop Color="{DynamicResource ControlLightColor}"
-                Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
-                     StartPoint="0,0"
-                     EndPoint="1,0">
-        <LinearGradientBrush.GradientStops>
-            <GradientStopCollection>
-                <GradientStop Color="#1F2131"
-                    Offset="0" />
-                <GradientStop Color="#1F2131"
-                    Offset="0.4" />
-                <GradientStop Color="#1F2131"
-                    Offset="0.6" />
-                <GradientStop Color="#1F2131"
-                    Offset="1" />
-            </GradientStopCollection>
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>
-    
-    <Style x:Key="ContextMenu" TargetType="{x:Type ContextMenu}">
-        <Setter Property="SnapsToDevicePixels"
-          Value="True" />
-        <Setter Property="OverridesDefaultStyle"
-          Value="True" />
-        <Setter Property="Grid.IsSharedSizeScope"
-          Value="true" />
-        <Setter Property="HasDropShadow"
-          Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ContextMenu}">
-                    <Border x:Name="Border"
-                Background="{StaticResource MenuPopupBrush}"
-                BorderThickness="1">
-                        <Border.BorderBrush>
-                            <SolidColorBrush Color="{StaticResource BorderMediumColor}" />
-                            
-                        </Border.BorderBrush>
-                        <StackPanel IsItemsHost="True"
-                      KeyboardNavigation.DirectionalNavigation="Cycle" />
-                    </Border>
-                   
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

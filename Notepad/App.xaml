@@ -19,7 +19,23 @@
                         </ResourceDictionary.MergedDictionaries>
 
                     </ResourceDictionary>
-                
+
+                <ResourceDictionary x:Name="ContextMenuStyle" >
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="Theme/StackOfNotepadsTheme/ContextMenuStyle.xaml" />
+
+                    </ResourceDictionary.MergedDictionaries>
+
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Name="TextBoxEnabledStyle" >
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="Theme/StackOfNotepadsTheme/TextBoxEnabledStyle.xaml" />
+
+                    </ResourceDictionary.MergedDictionaries>
+
+                </ResourceDictionary>
+
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

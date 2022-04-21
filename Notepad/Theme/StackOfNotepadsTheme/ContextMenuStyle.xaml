@@ -1,0 +1,101 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="WindowColor">#1F2131</Color>
+    <Color x:Key="ContentAreaColorLight">#272537</Color>
+    <Color x:Key="ContentAreaColorDark">#272537</Color>
+
+    <Color x:Key="DisabledControlLightColor">#843751</Color>
+    <Color x:Key="DisabledControlDarkColor">#843751</Color>
+    <Color x:Key="DisabledForegroundColor">#843751</Color>
+
+    <Color x:Key="SelectedBackgroundColor">#1F2131</Color>
+    <Color x:Key="SelectedUnfocusedColor">#1F2131</Color>
+
+    <Color x:Key="ControlLightColor">#272537</Color>
+    <Color x:Key="ControlMediumColor">#272537</Color>
+    <Color x:Key="ControlDarkColor">#272537</Color>
+
+    <Color x:Key="ControlMouseOverColor">#1F2131</Color>
+    <Color x:Key="ControlPressedColor">#843751</Color>
+
+
+    <Color x:Key="GlyphColor">#843751</Color>
+    <Color x:Key="GlyphMouseOver">#843751</Color>
+
+    <!--Border colors-->
+    <Color x:Key="BorderLightColor">#843751</Color>
+    <Color x:Key="BorderMediumColor">#843751</Color>
+    <Color x:Key="BorderDarkColor">#843751</Color>
+
+    <Color x:Key="PressedBorderLightColor">#843751</Color>
+    <Color x:Key="PressedBorderDarkColor">#843751</Color>
+
+    <Color x:Key="DisabledBorderLightColor">#843751</Color>
+    <Color x:Key="DisabledBorderDarkColor">#843751</Color>
+
+    <Color x:Key="DefaultBorderBrushDarkColor">#843751</Color>
+
+    <!--Control-specific resources.-->
+    <Color x:Key="HeaderTopColor">#843751</Color>
+    <Color x:Key="DatagridCurrentCellBorderColor">#843751</Color>
+    <Color x:Key="SliderTrackDarkColor">#843751</Color>
+
+    <Color x:Key="NavButtonFrameColor">#843751</Color>
+
+    <LinearGradientBrush x:Key="MenuPopupBrush"
+                     EndPoint="0.5,1"
+                     StartPoint="0.5,0">
+        <GradientStop Color="{DynamicResource ControlLightColor}"
+                Offset="0" />
+        <GradientStop Color="{DynamicResource ControlMediumColor}"
+                Offset="0.5" />
+        <GradientStop Color="{DynamicResource ControlLightColor}"
+                Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="ProgressBarIndicatorAnimatedFill"
+                     StartPoint="0,0"
+                     EndPoint="1,0">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#1F2131"
+                    Offset="0" />
+                <GradientStop Color="#1F2131"
+                    Offset="0.4" />
+                <GradientStop Color="#1F2131"
+                    Offset="0.6" />
+                <GradientStop Color="#1F2131"
+                    Offset="1" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
+
+    <Style x:Key="ContextMenu" TargetType="{x:Type ContextMenu}">
+        <Setter Property="SnapsToDevicePixels"
+          Value="True" />
+        <Setter Property="OverridesDefaultStyle"
+          Value="True" />
+        <Setter Property="Grid.IsSharedSizeScope"
+          Value="true" />
+        <Setter Property="HasDropShadow"
+          Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border x:Name="Border"
+                Background="{StaticResource MenuPopupBrush}"
+                BorderThickness="1">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{StaticResource BorderMediumColor}" />
+
+                        </Border.BorderBrush>
+                        <StackPanel IsItemsHost="True"
+                      KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
