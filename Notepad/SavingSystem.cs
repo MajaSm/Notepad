@@ -2,18 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Notepad
 {
     class SavingSystem
     {
         private string _fileName;
-      
-        public Note SaveNotes(List<Note> notes)
+
+        public delegate void EmptyDelegate();
+        public event EmptyDelegate OnNotesSaved;
+
+        public void SaveNotes(List<Note> notes)
         {
             _fileName = String.Format(@"{0}\note.json", AppContext.BaseDirectory);
 
@@ -23,27 +22,27 @@ namespace Notepad
                 listOfNoteContents.Add(notes[i].NoteContent);
             }
 
-
-            ListOfNotes listOfNotes = new ListOfNotes(listOfNoteContents);
+            ListOfNoteContents listOfNotes = new ListOfNoteContents(listOfNoteContents);
 
             string noteJson = JsonConvert.SerializeObject(listOfNotes);
 
             File.WriteAllText(_fileName, noteJson);
-            return null;
+            OnNotesSaved?.Invoke();
+            return;
         }
 
-        public ListOfNotes LoadNoteData()
+        public ListOfNoteContents LoadNoteData()
         {
             _fileName = String.Format(@"{0}\note.json", AppContext.BaseDirectory);
 
             if (File.Exists(_fileName))
             {
                 string noteJson = File.ReadAllText(_fileName);
-                ListOfNotes notes = JsonConvert.DeserializeObject<ListOfNotes>(noteJson);
+                ListOfNoteContents notes = JsonConvert.DeserializeObject<ListOfNoteContents>(noteJson);
                 return notes;
             }
 
-            return null;
+            return new ListOfNoteContents();
         }
     }
 }

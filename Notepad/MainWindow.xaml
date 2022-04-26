@@ -9,7 +9,7 @@
         WindowStyle="None"
         Background="Transparent" 
         WindowStartupLocation="CenterScreen"
-        AllowsTransparency="True"  MouseDown="Window_MouseDown" KeyDown="SaveFromKeyboard" 
+        AllowsTransparency="True"  MouseDown="Window_MouseDown" KeyDown="Window_KeyDown" x:Name="WholeAppWindow"
         >
 
     <Border CornerRadius="20" Background="#272537">
@@ -37,9 +37,8 @@
                        Foreground="White" 
                        FontSize="22" 
                        Margin="46,36,45,0" Height="40" Width="182"
-                       Name="ButtonAddScenario"
+                       Name="ButtonAddNote"
                        Style="{DynamicResource ButtonStyle1}"
-                       Click="ButtonAddNote_Click" 
                        RenderTransformOrigin="0.497,1.225"  >Add new note
 
             </Button>
@@ -53,8 +52,7 @@
                        Foreground="White" 
                        FontSize="22" 
                        Margin="559,36,30,0" Height="40" Width="182"
-                        Name="ButtonAddTab"
-                       Click="TextBlock_Click">
+                        Name="ButtonAddTab">
                 Add new tab
             </Button>
 
@@ -109,9 +107,8 @@
                       Stroke="#E7185F"
                      StrokeThickness="0.3"/>
             </Canvas>
-            <Button x:Name="ButtonSaveAll" 
+            <Button x:Name="SaveAllButton" 
                 Content="💾" 
-                Click="ButtonSaveAll_Click" 
                 Style="{DynamicResource ButtonStyle2}"
                 BorderBrush="Gray" 
                 Background="#272537" 
@@ -124,18 +121,18 @@
                 Width="36" Height="26" 
                 RenderTransformOrigin="0.194,-0.346" 
                  />
-            <Popup Name="myPopup" PlacementTarget="{Binding ElementName=ButtonSaveAll}" Placement="Bottom"  >
+            <Popup Name="myPopup" PlacementTarget="{Binding ElementName=SaveAllButton}" Placement="Bottom"  >
 
 
             </Popup>
             <Button   Style="{DynamicResource ButtonStyle2}"
-                Click="OpenWinOnStartButton_Clicked"  x:Name="YesButton" Content="Yes" BorderBrush="Gray"  Foreground="White"
+                x:Name="YesButton" Content="Yes" BorderBrush="Gray"  Foreground="White"
                 Background="#272537" HorizontalAlignment="Left" Margin="185,10,0,0" VerticalAlignment="Top" Width="28" Height="23"/>
-            <Button Style="{DynamicResource ButtonStyle2}" Click="OpenWinOnStartButton_Clicked" x:Name="NoButton" Content="No" BorderBrush="Gray"  Foreground="White"
+            <Button Style="{DynamicResource ButtonStyle2}" x:Name="NoButton" Content="No" BorderBrush="Gray"  Foreground="White"
                 Background="#272537" HorizontalAlignment="Left" Margin="213,10,0,0" VerticalAlignment="Top" Width="28" Height="23"/>
             <Label Content="Open on Windows start:" HorizontalAlignment="Left" Margin="46,7,0,0" VerticalAlignment="Top" Foreground="White"/>
 
-            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Name="MessageBoxForExit" Background="#272537" CornerRadius="5" BorderBrush="#843751" BorderThickness="2" Grid.Column="1" Margin="131,171,356,276" Grid.Row="1" Height="148">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Name="MessageBox" Background="#272537" CornerRadius="5" BorderBrush="#843751" BorderThickness="2" Grid.Column="1" Margin="131,171,356,276" Grid.Row="1" Height="148">
                 <Grid Grid.Column="1" HorizontalAlignment="Left" Height="148" Grid.Row="1" VerticalAlignment="Top" Width="284" Margin="-1.6,-1.6,-2.4,-1.6">
                     <Line
                       X1="100" Y1="0"
@@ -146,8 +143,8 @@
                     </Line>
 
                     <Button Style="{DynamicResource ButtonStyle2}"
-                        Click="ButtonExit_Click"  
-                                x:Name="YesButtonForExit"
+                        
+                                x:Name="MessageBoxLeftButton"
                                 Content="Yes" 
                                 BorderBrush="Black"  
                                 Foreground="WhiteSmoke"
@@ -158,8 +155,8 @@
                                 Width="61" 
                                 Height="23"/>
                     <Button Style="{DynamicResource ButtonStyle2}"
-                        Click="ButtonExit_Click" 
-                                x:Name="NoButtonForExit" 
+                       
+                                x:Name="MessageBoxRightButton" 
                                 Content="No" 
                                 BorderBrush="Black"  
                                 Foreground="WhiteSmoke"
@@ -174,7 +171,7 @@
                            HorizontalAlignment="Left" 
                            Margin="10,46,0,0" 
                            VerticalAlignment="Top"
-                               
+                            x:Name="MesageBoxDescriptionText"   
                                />
                     <Label Content="Confirmation" 
                            Foreground="WhiteSmoke"
@@ -182,7 +179,7 @@
                            Margin="10,0,0,0" 
                            FontSize="16"
                            VerticalAlignment="Top"
-                           
+                           x:Name="MesageBoxTitleText"  
                            />
 
 

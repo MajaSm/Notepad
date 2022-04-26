@@ -26,12 +26,27 @@ namespace Notepad
         public NoteContent NoteContent = new NoteContent();
         public NoteReferences NoteReferences = new NoteReferences();
     }
-    
-    public class ListOfNotes
+
+    public class ListOfNotes 
+    {
+        public List<Note> Notes;
+
+        public ListOfNotes()
+        {
+            Notes = new List<Note>();
+        }
+    }
+
+    public class ListOfNoteContents
     {
         public List<NoteContent> Notes;
 
-        public ListOfNotes(List<NoteContent> notes)
+        public ListOfNoteContents() 
+        {
+            Notes = new List<NoteContent>();
+        }
+
+        public ListOfNoteContents(List<NoteContent> notes)
         {
             Notes = notes;
         }

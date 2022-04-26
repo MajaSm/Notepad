@@ -241,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ToolBar.cs" />
+    <Compile Include="PopUpWindow.cs" />
+    <Compile Include="StackOfTabs.cs" />
+    <Compile Include="StackOfNotes.cs" />
     <Compile Include="SavingSystem.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -272,7 +276,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Note.cs" />
+    <Compile Include="Notes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
