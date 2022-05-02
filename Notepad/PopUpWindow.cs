@@ -18,10 +18,14 @@ namespace Notepad
         private Button _rightOptionButton;
         private Action _leftOptionAction;
         private Action _rightOptionAction;
+        private SavingSystem _savingSystem;
+        private ListOfNotes _listOfNotes;
 
-        public PopUpWindow(Border window)
+        public PopUpWindow(Border window, SavingSystem savingSystem, ListOfNotes listOfNotes)
         {
             _window = window;
+            _savingSystem = savingSystem;
+            _listOfNotes = listOfNotes;
             GetReferences();
 
             _leftOptionButton.Click += (sender, args) => OnLeftButtonClick();
@@ -76,7 +80,7 @@ namespace Notepad
             {
                 return;
             }
-                
+            _savingSystem.SaveNotes(_listOfNotes.Notes);
             _leftOptionAction.Invoke();
         }
 

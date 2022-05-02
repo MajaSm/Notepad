@@ -50,19 +50,20 @@ namespace Notepad
             _stackOfTabs = new StackOfTabs(notes, _listOfNotes, ButtonAddTab);
             _stackOfTabs.SetContent(0);
             _leftCorner = new ToolBar(myPopup, YesButton, NoButton, SaveAllButton, _listOfNotes, _savingSystem);
-            _popUpWindow = new PopUpWindow(MessageBox);
+            _popUpWindow = new PopUpWindow(MessageBox, _savingSystem, _listOfNotes);
         }
 
         private void ButtonExit_Click(object sender, RoutedEventArgs args)
         {
             _popUpWindow.Show(
                 "Confirmation",
-                "Are you sure you want to close Aplication?",
+                "Do you want to SAVE before exiting Aplication?",
                 "Yes",
                 "No",
                 Close,
-                null
-                );
+                Close
+                ) ;
+            
         }
 
         private void ButtonMinimize_Click(object sender, RoutedEventArgs args)
