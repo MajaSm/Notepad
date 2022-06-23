@@ -18,7 +18,7 @@ namespace Notepad
         private Button _saveAllButton;
         private ListOfNotes _listOfNotes;
         private SavingSystem _savingSystem;
-        string appFileName = "Notepad.exe";
+        string appFileName = "Task Notes.exe";
         string directory = Process.GetCurrentProcess().MainModule.FileName;
 
         public ToolBar(Popup popup, Button yesButton, Button noButton, Button saveAllButton, ListOfNotes listOfNotes, SavingSystem savingSystem)

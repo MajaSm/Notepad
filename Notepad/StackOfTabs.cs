@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Notepad
@@ -238,7 +240,15 @@ namespace Notepad
             tab.DeleteButton = newButtonDelete;
             tab.Grid = newGrid;
             BgColorOfTextBox(tab);
+
+            newNote.LostKeyboardFocus += OnKeyboardFocusChanged;
+
             _listOfTabs.Add(tab);
+        }
+
+        private void OnKeyboardFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            SaveTabs();
         }
     }
 }
